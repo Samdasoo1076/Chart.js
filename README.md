@@ -16,3 +16,8 @@ label varchar(255)
 value int(11) 입니다 
 
 주의사항은 value에 Data Type을 varchar로 할 시 chart_js 데이터를 뿌릴때 데이터 형변환을 해야합니다(parseInt)
+
+
+---------------------------------------------
+
+API_JS 키는 안 올렸습니다.
