@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #Chart {
+            position: absolute;
+            top: 0;
+            left: 35%;
+        }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="api_key.js"></script>
+</head>
+<body>
+    <div id="Chart">
+    <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+    <script>
+        //  const apiKey = 'jGCW2cH1wW9+FUZW43rv/C8jBSX0Jqsa0NgA37UvJcc55KRrgFpYbq6BrUzvQ/YQclbVZjcKOP5qMYeoCbSoJw==';
+    
+        //  const apiUrl = `https://api.odcloud.kr/api/15052392/v1/uddi:77246885-358a-4389-8338-d4c5df6be1f8_201908291426?page=1&perPage=10&serviceKey=jGCW2cH1wW9%2BFUZW43rv%2FC8jBSX0Jqsa0NgA37UvJcc55KRrgFpYbq6BrUzvQ%2FYQclbVZjcKOP5qMYeoCbSoJw%3D%3D`;
+  
+         const apikey = config.api_key1;
+         const apiUrl = config.api_url1;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Log the data to inspect its structure
+                const labels = [];
+                const values = [];
+                data.data.forEach(item => {
+                    labels.push(item.연령);
+                    values.push(parseInt(item.가락1동)); 
+                });
+    
+                const ctx = document.getElementById('myChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '인구',
+                            data: values,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                circular: true,
+                                display: true,
+                                title : {
+                                    color: 'red',
+                                    display: true,
+                                    text: '송파구 연령 비율'
+                                },
+                                grid: {
+                                    color: 'red',
+                                    borderColor: 'grey',
+                                    tickColor: 'grey'
+                                }
+                            }, 
+                            y: {
+                                grid: {
+                                    color: 'blue',
+                                    borderColor: 'grey',
+                                    tickColor: 'grey',
+                                    tick: {
+                                        crossAlign: 'far'
+                                    }
+                                }
+                            },
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>

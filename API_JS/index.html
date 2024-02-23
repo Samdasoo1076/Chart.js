@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>title</title>
+    <style>
+        #Chart1 {
+            position: absolute;
+            top: 0;
+            left: 30%;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="Chart1">
+    <canvas id="myChart" width="600" height="600"></canvas>
+    </div>
+    <script>
+
+        const apiurl = "https://smart.incheon.go.kr/server/rest/services/Hosted/군구별_인구증가율_정보/FeatureServer/6/query?where=1%3D1&outFields=sig_cd,f2017&outSR=4326&f=json";
+
+
+        fetch(apiurl)
+            .then(response => response.json())
+            .then(data => {
+
+                const labels = [];
+                const values = [];
+                data.features.forEach(feature => {
+                    labels.push(feature.attributes.sig_cd);
+                    values.push(feature.attributes.f2017);
+                });
+
+ 
+                const ctx = document.getElementById('myChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Population 2017',
+                            data: values,
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1,
+                            hoverBackgroundColor: 'rgba(0, 0, 0, 1)'
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
