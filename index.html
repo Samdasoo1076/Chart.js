@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>테스트</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+    <div id="Chart">
+
+        <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+
+    <div id="Chart2">
+
+        <canvas id="myChart2" width="400" height="400"></canvas>
+    </div>
+
+    <div id="Chart3">
+        <canvas id="myChart3" width="400" height="400"></canvas>
+    </div>
+    
+    <div id="Chart4">
+        <canvas id="myChart4" width="300" height="300"></canvas>
+    </div>
+
+    <div id="Chart5">
+        <canvas id="myChart5" width="300" height="300"></canvas>
+    </div>
+    <script>
+        // 데이터 가져와서 시각화하는 함수
+        async function fetchDataAndVisualize() {
+            try {
+                // 서버에서 데이터 가져오기
+                const response = await fetch('/data');
+                const data = await response.json();
+
+                // 데이터를 시각화하기 위한 라벨과 데이터 추출
+                const labels = data.map(item => item.label);
+                const values = data.map(item => item.value);
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const ctx2 = document.getElementById('myChart2').getContext('2d');
+                const ctx3 = document.getElementById('myChart3').getContext('2d');
+                const ctx4 = document.getElementById('myChart4').getContext('2d');
+                // 차트 생성
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '데이터 테스트',
+                            data: values,
+                            backgroundColor: 'rgba(0, 0, 192, 0.2)',
+                            borderColor: 'rgba(0, 0, 0, 1)',
+                            borderWidth: 1
+                        }, {
+                                type: 'line',
+                                label: '라인 데이터',
+                                data: values
+                        }]
+                    },
+                    options: {
+                        animation : false,
+                        responsive: false,
+                        borderRadius: 30,
+                        hoverBackgroundColor: 'rgba(255, 155, 55, 1)',
+                        hoverBorderWidth: 3,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }, plugin: {
+                        title: {
+                            display: true,
+                            text: '커스텀 차트 타이틀'
+                        }
+                    }
+                })
+
+                const myChart2 = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '데이터 테스트',
+                            data: values,
+                            backgroundColor: 'rgba(150, 40, 192, 0.2)',
+                            borderColor: 'rgba(0, 0, 0, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        animation : false,
+                        responsive: false,
+                        hoverBackgroundColor: 'rgba(0, 155, 55, 1)',
+                        hoverBorderWidth: 3,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }, plugin: {
+                        title: {
+                            display: true,
+                            text: '커스텀 차트 타이틀'
+                        }
+                    }
+                })
+                const myChart3 = new Chart(ctx3, {
+                    type: 'polarArea',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '데이터 테스트',
+                            data: values,
+                            backgroundColor: 'rgba(245, 40, 145, 0.8)',
+                            borderColor: 'rgba(0, 0, 0, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        animation : false,
+                        responsive: false,
+                        hoverBackgroundColor: 'rgba(255, 255, 0, 1)',
+                        hoverBorderWidth: 3,
+                        
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }, plugin: {
+                        title: {
+                            display: true,
+                            text: '커스텀 차트 타이틀'
+                        }
+                    }
+                }) 
+
+                const myChart4 = new Chart(ctx4, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '데이터 테스트',
+                            data: values,
+                            backgroundColor: 'rgba(0, 0, 192, 0.2)',
+                            borderColor: 'rgba(0, 0, 0, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: { 
+                        type: 'linear',
+                        position: 'left',
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }, plugin: {
+                        title: {
+                            display: true,
+                            text: '커스텀 차트 타이틀'
+                        }
+                    }
+                })
+                
+            } catch (error) {
+                console.error('데이터 가져오기 오류:', error);
+            }
+        }
+
+
+        // 페이지 로드 시 데이터 가져오기 및 시각화 함수 호출
+        window.onload = fetchDataAndVisualize;
+    </script>
+</body>
+</html>
